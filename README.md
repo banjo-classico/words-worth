@@ -15,7 +15,7 @@ https://github.com/nick-jacobs/personal-project
 ## Technologies
 * express.js
 * d3.js
-* handlebars
+* APIs - Twitter streaming API, NLP API
 
 ## Milestones
 What milestones and timeline do you want to commit to 

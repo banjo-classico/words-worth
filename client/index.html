@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Word's Worth</title>
+    <meta charset="utf-8">
+    <link  rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <!-- <script type="text/javascript" src="../jquery.js"></script> -->
+    <!-- <script src="../d3/d3-library.js"</script> -->
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="http://localhost:3000/texts">text finder</a></li>
+        <li><a href="http://localhost:3000/tweets">compare tweets</a></li>
+        <li><a href="http://localhost:3000/">home</a></li>
+      </ul>
+    </nav>
+    <div class=wrap>
+  <div class="main-div">
+
+    <header class="title">
+     <h1>Word's Worth</h1>
+    </header>
+    <div class="container">
+      <div class="searchform">
+
+          <div class="maintopic">
+            <p>Enter your main topic</p>
+            <p><input placeholder="main topic" type="text" name="maintopic" id="main-topic"></input></p>
+          </div>
+
+          <div class="keywords">
+            <p>Enter key words</p>
+            <p><input placeholder="key words..." type="text" id="terms"></p>
+          </div>
+          <div class=keyword-display>
+          <textarea type="text" id="displaybox" name="keyword"></textarea>
+          <input type="button" name="commit" onclick="apiCall()" value="compare" id="sendform">
+          </div>
+
+      </div>
+      <div class="result-container">
+        <div id="graph"></div>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
