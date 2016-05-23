@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "browserify ./src/index.js -o ./client/bundle.js",
+    "start": "node ./server.js",
+    "watch": "watchify ./src/index.js -o ./client/bundle.js -dv"
   },
   "repository": {
     "type": "git",

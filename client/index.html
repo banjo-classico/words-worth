@@ -3,12 +3,23 @@
   <head>
     <title>Word's Worth</title>
     <meta charset="utf-8">
-    <link  rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link  rel="stylesheet" type="text/css" href="/main.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <!-- <script type="text/javascript" src="../jquery.js"></script> -->
-    <!-- <script src="../d3/d3-library.js"</script> -->
   </head>
   <body>
+
+  <script>
+  $(document).ready(function () {
+      $('body').on('keypress', function(e) {
+        if (e.which === 13) {
+          $('#displaybox').val(function(index, val) {
+            return val + $('#terms').val() + ' '})
+          $('#terms').val('')
+        }
+      })
+    })
+    </script>
+
     <nav>
       <ul>
         <li><a href="http://localhost:3000/texts">text finder</a></li>
@@ -36,7 +47,7 @@
           </div>
           <div class=keyword-display>
           <textarea type="text" id="displaybox" name="keyword"></textarea>
-          <input type="button" name="commit" onclick="apiCall()" value="compare" id="sendform">
+          <input type="button" name="commit" value="compare" id="sendform">
           </div>
 
       </div>
@@ -45,5 +56,6 @@
       </div>
     </div>
   </div>
+  <script></script>
   </body>
 </html>
