@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify ./src/index.js -o ./client/bundle.js",
-    "start": "node ./server.js",
+    "start": "budo . -d --serve bundle.js --live",
+    "build": "browserify . -o bundle.js -g uglifyify",
     "watch": "watchify ./src/index.js -o ./client/bundle.js -dv"
   },
   "repository": {
@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "browserify": "^13.0.1",
+    "budo": "^8.2.2",
+    "uglifyify": "^3.0.1",
     "watchify": "^3.7.0"
   }
 }
