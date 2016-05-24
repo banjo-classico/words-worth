@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Word's Worth</title>
-    <meta charset="utf-8">
-    <link  rel="stylesheet" type="text/css" href="/main.css">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  </head>
-  <body>
+<head>
+  <title>Word's Worth</title>
+  <meta charset="utf-8">
+  <link  rel="stylesheet" type="text/css" href="/main.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
 
   <script>
-  $(document).ready(function () {
+    $(document).ready(function () {
       $('body').on('keypress', function(e) {
         if (e.which === 13) {
           $('#displaybox').val(function(index, val) {
@@ -18,24 +18,22 @@
         }
       })
     })
-    </script>
+  </script>
 
+  <div class=wrap>
     <nav>
       <ul>
-        <li><a href="http://localhost:3000/texts">text finder</a></li>
-        <li><a href="http://localhost:3000/tweets">compare tweets</a></li>
-        <li><a href="http://localhost:3000/">home</a></li>
+        <li><a href="#">text finder</a></li>
+        <li><a href="#twitter">compare tweets</a></li>
+        <li><a href="#">home</a></li>
       </ul>
     </nav>
-    <div class=wrap>
-  <div class="main-div">
-
     <header class="title">
-     <h1>Word's Worth</h1>
+      <h1>Word's Worth</h1>
     </header>
-    <div class="container">
-      <div class="searchform">
-
+    <section class="main">
+      <div class="container">
+        <div class="searchform">
           <div class="maintopic">
             <p>Enter your main topic</p>
             <p><input placeholder="main topic" type="text" name="maintopic" id="main-topic"></input></p>
@@ -46,16 +44,31 @@
             <p><input placeholder="key words..." type="text" id="terms"></p>
           </div>
           <div class=keyword-display>
-          <textarea type="text" id="displaybox" name="keyword"></textarea>
-          <input type="button" name="commit" value="compare" id="sendform">
+            <textarea type="text" id="displaybox" name="keyword"></textarea>
+            <input type="button" name="commit" value="compare" id="sendform">
           </div>
+        </div>
+        <div class="result-container">
+          <div id="graph"></div>
+        </div>
+      </div>
+    </section>
 
-      </div>
-      <div class="result-container">
-        <div id="graph"></div>
-      </div>
-    </div>
+    <div class='separator'></div>
+
+    <section class='twitter' id="twitter">
+      <div class="container">
+        <h1 class='tweet-header'>Backtweet Boy</h1>
+        <div class="searchform">
+          <div class="tweet-search">
+            <p><input placeholder="search Twitter" type="text" name="maintopic" id="tweet-search"></input></p>
+            <input type="button" name="commit" value="compare" id="tweetform">
+          </div>
+          <div class="result-container">
+            <div id="twitter-graph"></div>
+          </div>
+    </section>
   </div>
-  <script></script>
-  </body>
+    <script src='bundle.js'></script>
+</body>
 </html>
