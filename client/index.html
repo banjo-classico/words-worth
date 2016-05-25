@@ -4,6 +4,7 @@
   <title>Word's Worth</title>
   <meta charset="utf-8">
   <link  rel="stylesheet" type="text/css" href="/main.css">
+  <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
@@ -23,7 +24,7 @@
   <div class=wrap>
     <nav>
       <ul>
-        <li><a href="#">text finder</a></li>
+        <!-- <li><a href="#">text finder</a></li> -->
         <li><a href="#twitter">compare tweets</a></li>
         <li><a href="#">home</a></li>
       </ul>
@@ -33,23 +34,25 @@
     </header>
     <section class="main">
       <div class="container">
-        <div class="searchform">
+       <div class="row">
+        <div id="searchform" class="four columns">
           <div class="maintopic">
             <p>Enter your main topic</p>
             <p><input placeholder="main topic" type="text" name="maintopic" id="main-topic"></input></p>
           </div>
 
           <div class="keywords">
-            <p>Enter key words</p>
-            <p><input placeholder="key words..." type="text" id="terms"></p>
+            <p>Enter key word, hit return</p>
+            <p><input placeholder="key word" type="text" id="terms"></p>
           </div>
           <div class=keyword-display>
             <textarea type="text" id="displaybox" name="keyword"></textarea>
             <input type="button" name="commit" value="compare" id="sendform">
           </div>
         </div>
-        <div class="result-container">
+        <div id="result-container" class="eight columns">
           <div id="graph"></div>
+        </div>
         </div>
       </div>
     </section>
@@ -57,16 +60,20 @@
     <div class='separator'></div>
 
     <section class='twitter' id="twitter">
+    <h1 id='tweet-header'>Backtweet Boy</h1>
       <div class="container">
-        <h1 class='tweet-header'>Backtweet Boy</h1>
-        <div class="searchform">
-          <div class="tweet-search">
-            <p><input placeholder="search Twitter" type="text" name="maintopic" id="tweet-search"></input></p>
-            <input type="button" name="commit" value="compare" id="tweetform">
+        <div class="row" id="tweet">
+          <div id="searchform" class="four columns">
+            <div class="maintopic">
+              <p><input placeholder="search Twitter" type="text" name="maintopic" id="tweet-search"></input></p>
+              <input type="button" name="commit" value="compare" id="tweetform">
+            </div>
           </div>
-          <div class="result-container">
+          <div id="result-container" class="eight columns">
             <div id="twitter-graph"></div>
           </div>
+        </div>
+      </div>
     </section>
   </div>
     <script src='bundle.js'></script>

@@ -3,8 +3,12 @@ const d3 = require('d3')
 module.exports = function(dataSource, dock, labels) {
 
 var width = 500
-var height = 500
+var height = dataSource.length*30
 var padding = 1
+
+var labelScale = d3.scale.linear()
+                .domain([50, 1])
+                .range([6, 20])
 
 var dataScale = d3.scale.linear()
                 .domain([0, d3.max(dataSource)])
@@ -24,8 +28,8 @@ var bars = canvas.selectAll('rect')
             .enter()
               .append('rect')
               .attr('width', function(d) {return dataScale(d)})
-              .attr('height', height/dataSource.length)
-              .attr('y', function(d, i) {return i*(height/dataSource.length)})
+              .attr('height', 30)
+              .attr('y', function(d, i) {return i*31})
               .attr('fill', function(d) {return colorScale(d)})
 
 var labels = canvas.selectAll('text')
@@ -33,10 +37,10 @@ var labels = canvas.selectAll('text')
             .enter()
               .append('text')
               .attr('x', 10)
-              .attr('y', function(d, i) {return i*(height/dataSource.length)+ 5})
+              .attr('y', function(d, i) {return (i*31) + 20})
               .text(function(d) {return d})
               .attr('font-family', 'sans-serif')
-              .attr('font-size', '16px')
+              .attr('font-size', '12px')
               .attr('fill', '#fff')
 
 }
