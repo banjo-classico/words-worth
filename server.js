@@ -29,12 +29,31 @@ app.post('/compare', function(req, res) {
 app.post('/tweets', function(req, res) {
   var mainWord = req.body.maintopic
   twitter.getHashtags(mainWord, function(err, hashtags) {
+    hashtags = hashtags.filter(function(tag) {
+      return tag.toLowerCase() !== mainWord
+    })
     var terms = retina.buildTerms(mainWord, hashtags)
     retina.compareTerms(terms, function(err, resp, hashtags) {
       var result = {result: resp, hashtags: hashtags}
       res.json(result)
     })
   })
+})
+
+app.post('/stream', function(req, res) {
+  var searchterm = req.body.searchterm
+  twitter.client.stream('statuses/filter', {track: searchterm}, function(stream) {
+  stream.on('data', function(tweet) {
+    if (tweet.user.location !== null) {
+      
+      console.log(tweet.user.location)
+    }
+  })
+
+  stream.on('error', function(error) {
+    throw error
+  })
+})
 })
 
 

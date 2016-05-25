@@ -3,7 +3,7 @@ const d3 = require('d3')
 module.exports = function(dataSource, dock, labels) {
 
 var width = 500
-var height = dataSource.length*30
+var height = dataSource.length*31
 var padding = 1
 
 var labelScale = d3.scale.linear()

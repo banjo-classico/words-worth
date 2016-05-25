@@ -80,9 +80,10 @@ svg {
   color: #fff;
   font-size: 24pt;
   text-align: center;
+  overflow: scroll;
 }
 
-input[id=main-topic] {
+input[id=main-topic], input[id=tweet-search] {
   font-size: 12pt;
   border: 2px solid white;
   border-radius: 4px;
@@ -94,8 +95,7 @@ input[id=terms] {
   font-size: 12pt;
   border: 2px solid white;
   border-radius: 4px;
-  padding: 12px 1px;
-  margin: 8px 0;
+  padding: 12px 5px;
   text-align: center;
 }
 
@@ -129,9 +129,9 @@ input[id=sendform]:hover {
 
 /*--------------------------BACKTWEET BOY--------------*/
 
-#tweet {
+/*#tweet {
   display: flex;
-}
+}*/
 
 #tweet-header {
   text-align: left;

@@ -43,6 +43,22 @@ function extractTags(tweets) {
 }
 //tweets.statuses.entities.hashtags then array of objects with .text as tag
 
+// function streamTweets(searchterm, callback) {
+//   client.stream('statuses/filter', {track: searchterm}, callback(stream) {
+//   stream.on('data', function(tweet) {
+//     console.log(tweet)
+//   })
+
+//   stream.on('error', function(error) {
+//     throw error
+//   })
+// })
+// }
+
+
+
+
 module.exports = {
-  getHashtags: getHashtags
+  getHashtags: getHashtags,
+  client: client
 }

@@ -25,14 +25,15 @@
     <nav>
       <ul>
         <!-- <li><a href="#">text finder</a></li> -->
-        <li><a href="#twitter">compare tweets</a></li>
-        <li><a href="#">home</a></li>
+        <li><a href="#twitter">compare hashtags</a></li>
+        <li><a href="#twit-stream">world tweets</a></li>
+        <li><a href="#main">home</a></li>
       </ul>
     </nav>
     <header class="title">
       <h1>Word's Worth</h1>
     </header>
-    <section class="main">
+    <section class="main" id="main">
       <div class="container">
        <div class="row">
         <div id="searchform" class="four columns">
@@ -71,6 +72,25 @@
           </div>
           <div id="result-container" class="eight columns">
             <div id="twitter-graph"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class='separator'></div>
+
+    <section class='stream' id="twit-stream">
+    <h1 id='tweet-header'>Home Tweet Home</h1>
+      <div class="container">
+        <div class="row">
+          <div id="searchform" class="four columns">
+            <div class="maintopic">
+              <p><input placeholder="search" type="text" name="maintopic" id="stream-search"></input></p>
+              <input type="button" name="commit" value="compare" id="streamform">
+            </div>
+          </div>
+          <div id="result-container" class="eight columns">
+            <div id="stream-graph"></div>
           </div>
         </div>
       </div>

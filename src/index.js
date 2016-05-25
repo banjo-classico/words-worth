@@ -8,6 +8,7 @@ require('dotenv').config()
 $('document').ready(function() {
 
   $('#sendform').on('click', function() {
+    $('#graph').empty()
     var mainWord = $('#main-topic').val()
     var keywords = $('#displaybox').val()
     keywords = keywords.trim().split(" ")
@@ -25,9 +26,12 @@ $('document').ready(function() {
           makeGraph(dataArr, '#graph', keywords)
         }
       })
+    $('#displaybox').val('')
+    $('#main-topic').val('')
   })
 
   $('#tweetform').on('click', function() {
+    $('#twitter-graph').empty()
     var mainWord = $('#tweet-search').val()
     request
       .post('/tweets')
@@ -64,5 +68,16 @@ $('document').ready(function() {
   //       })
   //   })
   // })
+
+  $('#streamform').on('click', function() {
+    var mainWord = $('#stream-search').val()
+    request
+      .post('/stream')
+      .send({searchterm: mainWord})
+      .end(function(err, res) {
+        if (err) throw err
+        
+      })
+  })
 
 })
