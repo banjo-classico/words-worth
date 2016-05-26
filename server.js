@@ -1,13 +1,17 @@
+const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 const retina = require('./src/retina')
 const twitter = require('./src/twitter')
 //const geo = require('./src/googlemaps')
-const geocoder = require('geocoder')
+const geo = require('./src/geoCoder')
 const cors = require('cors')
 
-var app = express()
-var port = process.env.PORT || 3000
+const app = express()
+const server = http.createServer(app)
+const io = require('socket.io').listen(server)
+
+const port = process.env.PORT || 3000
 app.use(cors())
 
 app.use(bodyParser.json())
@@ -45,27 +49,29 @@ app.post('/tweets', function(req, res) {
 app.post('/stream', function(req, res) {
   var searchterm = req.body.searchterm
   twitter.client.stream('statuses/filter', {track: searchterm}, function(stream) {
-  stream.on('data', function(tweet) {
-    var location = tweet.user.location
-    if (location !== null) {
-      console.log(location)
-      geocoder.geocode(location, function(err, data) {
-        if (data.results[0] !== undefined) {
-          var latLng = data.results[0].geometry.location
-        console.log("DATA: ", data.results[0].geometry.location)
-        //res.json(latLng)
-        }
-      })
-    }
-  })
+    stream.on('data', function(tweet) {
+      var location = tweet.user.location
+      if (location !== null) {
+        console.log(location)
+        geo.getGeoCode(location, function(err, geoCode) {
+          io.on('connection', function(socket) {
+          socket.emit('geoCode', geoCode)
+          })
+        })
+      }
+    })
 
-  stream.on('error', function(error) {
-    throw error
+    stream.on('error', function(error) {
+      throw error
+    })
   })
 })
+
+io.on('connection', function(socket) {
+  socket.emit('news')
 })
 
 
-app.listen(port, function () {
-  console.log("Word's Worth is now cruising on 3000")
+server.listen(port, function () {
+  console.log("Word's Worth is now cruising...")
 })
