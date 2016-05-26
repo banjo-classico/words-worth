@@ -1,6 +1,6 @@
 const request = require('superagent')
 const $ = require('jquery')
-const makeGraph = require('./graph')
+const d3 = require('./d3')
 const twitter = require('./twitter')
 require('dotenv').config()
 
@@ -23,7 +23,7 @@ $('document').ready(function() {
           var dataArr = res.body.map(function(e) {
             return e.weightedScoring
           })
-          makeGraph(dataArr, '#graph', keywords)
+          d3.makeGraph(dataArr, '#graph', keywords)
         }
       })
     $('#displaybox').val('')
@@ -45,7 +45,7 @@ $('document').ready(function() {
           return e[1].term
         })
         console.log(scores.length)
-        makeGraph(scores, '#twitter-graph', tags)
+        d3.makeGraph(scores, '#twitter-graph', tags)
       })
   })
 
@@ -76,8 +76,11 @@ $('document').ready(function() {
       .send({searchterm: mainWord})
       .end(function(err, res) {
         if (err) throw err
-        
+        //d3.plotOnWorldMap()
+
       })
   })
+
+  d3.createMap()
 
 })

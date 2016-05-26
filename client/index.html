@@ -6,9 +6,9 @@
   <link  rel="stylesheet" type="text/css" href="/main.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script  src = "http://d3js.org/topojson.v1.min.js" > </script>
 </head>
 <body>
-
   <script>
     $(document).ready(function () {
       $('body').on('keypress', function(e) {
@@ -89,7 +89,9 @@
               <input type="button" name="commit" value="compare" id="streamform">
             </div>
           </div>
-          <div id="result-container" class="eight columns">
+        </div>
+        <div class="row">
+          <div id="map-container" class="twelve columns">
             <div id="stream-graph"></div>
           </div>
         </div>

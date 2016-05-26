@@ -114,8 +114,8 @@ input[id=sendform]:hover {
 
 /*------------------GRAPHS----------*/
 
-#result-container {
-  height: 550px;
+#result-container, #map-container {
+  height: 500px;
   margin-bottom: 100px;
   text-align: center;
   border: 1px solid #333;
@@ -123,8 +123,24 @@ input[id=sendform]:hover {
   overflow: scroll;
 }
 
+#map-container {
+  margin: auto;
+  width: 120%;
+  height: 550px;
+  margin-left: -100px;
+  overflow: hidden;
+
+}
+
 #twitter-graph, #graph{
   padding: 10px;
+}
+
+g {
+  width: 200%;
+}
+#stream-graph svg{
+  margin-top: -10px;
 }
 
 /*--------------------------BACKTWEET BOY--------------*/
