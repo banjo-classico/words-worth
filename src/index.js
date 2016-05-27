@@ -1,12 +1,12 @@
 const request = require('superagent')
 const $ = require('jquery')
 const d3 = require('./d3')
-const map = d3.worldMap()
 const twitter = require('./twitter')
 require('dotenv').config()
 
 
 $('document').ready(function() {
+  d3.worldMap()
 
   $('#sendform').on('click', function() {
     $('#graph').empty()
@@ -60,7 +60,7 @@ $('document').ready(function() {
   //       .end(function(err, res) {
   //         if (err) {
   //           console.log(err)
-  //         } else { 
+  //         } else {
   //           var hashtagArr = res.body.map(function(e) {
   //             return e.weightedScoring
   //           })
@@ -70,19 +70,15 @@ $('document').ready(function() {
   //   })
   // })
 
-  var socket = io.connect('http://localhost')
-
-  $('#streamform').on('click', function() {
-    socket.emit()
-    var mainWord = $('#stream-search').val()
-    request
-      .post('/stream')
-      .send({searchterm: mainWord})
-      .end(function(err, res) {
-        if (err) throw err
-
-        map.addGeoData(res)
-      })
+  var socket = io()
+  $('#stream-search').submit(function(e) {
+    e.preventDefault()
+    socket.emit('twitter-stream', $('#streamtopic').val())
   })
 
+  socket.on('geoCode', function(geoCode) {
+    console.log(geoCode.lat, geoCode.lng)
+    $('#test-text').text(geoCode.lat)
+    d3.addGeoData(geoCode)
+  })
 })

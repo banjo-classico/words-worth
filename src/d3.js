@@ -49,9 +49,7 @@ var labels = canvas.selectAll('text')
 }
 
 
-function worldMap() {
-  
-  var geoData = []
+var geoData = []
 
   var width = parseInt(d3.select('#stream-graph').style('width'))
       mapRatio = .5
@@ -71,91 +69,75 @@ function worldMap() {
               .projection(projection)
 
   var g = canvas.append('g')
-
-  createMap()
   //d3.json(topo, function(error, topology) {
     //console.log(topology)
-  function createMap() {
-    g.selectAll('path')
-      .data(topojson.feature(topo, topo.objects.countries)
-            .features)
-      .enter()
-        .append('path')
-        .attr('d', path)
-        .attr('stroke', '#fff')
-        .attr('stroke-width', '0.25px')
-        .attr('fill', '#666')
-  }
+function worldMap() {
+  g.selectAll('path')
+    .data(topojson.feature(topo, topo.objects.countries)
+          .features)
+    .enter()
+      .append('path')
+      .attr('d', path)
+      .attr('stroke', '#fff')
+      .attr('stroke-width', '0.25px')
+      .attr('fill', '#666')
+}
 
-  var startPingRadius = 5,
-      endPingRadius = 30,
-      pingThickness = 2;
-  var arc = d3.svg.arc()
-        .outerRadius(startPingRadius)
-        .innerRadius(startPingRadius - pingThickness);
+var startPingRadius = 5,
+    endPingRadius = 30,
+    pingThickness = 2;
+var arc = d3.svg.arc()
+      .outerRadius(startPingRadius)
+      .innerRadius(startPingRadius - pingThickness);
 
 
-  function addGeoData(data) {
-    geoData.push(data);
-    updateDots();
-  }
+function addGeoData(data) {
+  geoData.push(data);
+  updateDots();
+}
 
-  function updateDots() {
-    // enter
-    canvas.selectAll("circle")
-      .data(geoData)
-      .enter()
-        .append("circle")
-        .classed("point", true)
-        .attr("r", 3)
-        .each(function(d) {
-          radarPing(d);
+function updateDots() {
+  // enter
+  canvas.selectAll("circle")
+    .data(geoData)
+    .enter()
+      .append("circle")
+      .classed("point", true)
+      .attr("r", 3)
+      .each(function(d) {
+        radarPing(d);
+      });
+
+}
+
+
+function radarPing(d) {
+  var p = projection([d.lng, d.lat]);
+  var x = p[0];
+  var y = p[1];
+  for (var i = 1; i < 5; i += 1) {
+    canvas.append("circle")
+        .classed("radar-ping", true)
+        .attr("cx", x)
+        .attr("cy", y)
+        .attr("r", startPingRadius - (pingThickness / 2))
+        .style("stroke-width", pingThickness)
+        .style('stroke', 'yellow')
+      .transition()
+        .delay(Math.pow(i, 2.5) * 50)
+        .duration(1000).ease('quad-in')
+        .attr("r", endPingRadius)
+        .style("stroke-opacity", 1)
+        .style('stroke', 'orange')
+        .each("end", function() {
+            d3.select(this).attr("r", 1);
         });
-
-    // update
-    canvas.selectAll("circle.point")
-      .data(geoData)
-        console.log('im in a circle')
-        .attr("cx", function(d) {
-          return projection([d.lng, d.lat])[0];
-        })
-        .attr("cy", function(d) {
-          return projection([d.lng, d.lat])[1];
-        })
-        .attr("fill", "blue");
-  }
-
-  function radarPing(d) {
-    var p = projection([d.lng, d.lat]);
-    var x = p[0];
-    var y = p[1];
-    for (var i = 1; i < 5; i += 1) {
-      canvas.append("circle")
-          .classed("radar-ping", true)
-          .attr("cx", x)
-          .attr("cy", y)
-          .attr("r", startPingRadius - (pingThickness / 2))
-          .style("stroke-width", pingThickness / i)
-          .style('stroke', 'blue')
-        .transition()
-          .delay(Math.pow(i, 2.5) * 50)
-          .duration(1000).ease('quad-in')
-          .attr("r", endPingRadius)
-          .style("stroke-opacity", 0)
-          .style('stroke', 'blue')
-          .each("end", function() {
-              d3.select(this).remove();
-          });
-    }
-  }
-
-  return {
-    addGeoData:addGeoData
   }
 }
 
 
 module.exports = {
   makeGraph: makeGraph,
-  worldMap: worldMap
+  worldMap: worldMap,
+  addGeoData: addGeoData
 }
