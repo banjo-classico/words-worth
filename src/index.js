@@ -1,11 +1,12 @@
 const request = require('superagent')
 const $ = require('jquery')
 const d3 = require('./d3')
-//const twitter = require('./twitter')
+const twitter = require('./twitter')
 require('dotenv').config()
 
 
 $('document').ready(function() {
+  d3.worldMap()
 
   $('#sendform').on('click', function() {
     $('#graph').empty()
@@ -49,45 +50,15 @@ $('document').ready(function() {
       })
   })
 
-  // $('#tweetform').on('click', function() {
-  //   var mainWord = $('#tweet-search').val()
-  //   twitter.getHashtags(mainWord, function(err, hashtags) {
-
-  //     request
-  //       .post('/compare')
-  //       .send({maintopic: mainWord, keywords: hashtags})
-  //       .end(function(err, res) {
-  //         if (err) {
-  //           console.log(err)
-  //         } else { 
-  //           var hashtagArr = res.body.map(function(e) {
-  //             return e.weightedScoring
-  //           })
-  //           makeGraph(hashtagArr, '#twitter-graph', hashtags)
-  //         }
-  //       })
-  //   })
-  // })
-
-
-  $('#streamform').on('click', function() {
-    var mainWord = $('#stream-search').val()
-    request
-      .post('/stream')
-      .send({searchterm: mainWord})
-      .end(function(err, res) {
-        if (err) throw err
-        console.log(res)
-      })
+  var socket = io()
+  $('#stream-search').submit(function(e) {
+    e.preventDefault()
+    socket.emit('twitter-stream', $('#streamtopic').val())
   })
 
-  var socket = io.connect()
-  window.socket = socket
-
-  socket.on('newGeoCode', function(geoCode) {
-    //do something
-    console.log(geoCode)
-    d3.worldMap.addGeoData(geoCode)
-    d3.worldMap()
+  socket.on('geoCode', function(geoCode) {
+    console.log(geoCode.lat, geoCode.lng)
+    $('#test-text').text(geoCode.lat)
+    d3.addGeoData(geoCode)
   })
 })

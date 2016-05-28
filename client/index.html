@@ -86,8 +86,10 @@
         <div class="row">
           <div id="searchform" class="four columns">
             <div class="maintopic">
-              <p><input placeholder="search" type="text" name="maintopic" id="stream-search"></input></p>
-              <input type="button" name="commit" value="compare" id="streamform">
+              <form id='stream-search'>
+                <p><input placeholder="search" type="text" name="maintopic" id="streamtopic"></input></p>
+                <input type="button" name="commit" value="compare" id="streamform">
+              </form>
             </div>
           </div>
         </div>
@@ -95,6 +97,7 @@
           <div id="map-container" class="twelve columns">
             <div id="stream-graph"></div>
           </div>
+          <p id="test-text"></p>
         </div>
       </div>
     </section>

@@ -1,5 +1,7 @@
-const http = require('http')
 const express = require('express')
+const app = express()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 const bodyParser = require('body-parser')
 const retina = require('./src/retina')
 const twitter = require('./src/twitter')
@@ -7,9 +9,6 @@ const twitter = require('./src/twitter')
 const geo = require('./src/geoCoder')
 const cors = require('cors')
 
-const app = express()
-const server = http.createServer(app)
-const io = require('socket.io').listen(server)
 
 const port = process.env.PORT || 3000
 app.use(cors())
@@ -19,7 +18,7 @@ app.use(express.static('client'))
 
 
 app.get('/', function (req, res) {
-    res.send('index.html')
+    res.sendfile(__dir + 'index.html')
 })
 
 app.post('/compare', function(req, res) {
@@ -46,33 +45,27 @@ app.post('/tweets', function(req, res) {
   })
 })
 
-app.post('/stream', function(req, res) {
-  var searchterm = req.body.searchterm
-  twitter.client.stream('statuses/filter', {track: searchterm}, function(stream) {
-    stream.on('data', function(tweet) {
-      var location = tweet.user.location
-      if (location !== null) {
-        console.log(location)
-        geo.getGeoCode(location, function(err, geoCode) {
-          io.on('connection', function(socket) {
-            socket.emit('newGeoCode', geoCode)
+io.on('connection', function(socket) {
+  socket.on('twitter-stream', function(word) {
+    word = '#' + word
+    console.log(word)
+    twitter.client.stream('statuses/filter', {track: word}, function(stream) {
+      stream.on('data', function(tweet) {
+        var location = tweet.user.location
+        if (location !== null) {
+          console.log(location)
+          geo.getGeoCode(location, function(err, geoCode) {
+            socket.emit('geoCode', geoCode)
           })
-          socket.on('disconnect', function(){
-            console.log('user disconnected');
-          })
-        })
-      }
-      // var received = 'Stream is initiated'
-      // res.send(received)
-    })
-
-    stream.on('error', function(error) {
-      throw error
+        }
+      })
+      stream.on('error', function(error) {
+        throw error
+      })
     })
   })
 })
 
-
-server.listen(port, function () {
+http.listen(port, function () {
   console.log("Word's Worth is now cruising...")
 })
