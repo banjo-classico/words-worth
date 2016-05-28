@@ -55,20 +55,21 @@ app.post('/stream', function(req, res) {
         console.log(location)
         geo.getGeoCode(location, function(err, geoCode) {
           io.on('connection', function(socket) {
-          socket.emit('geoCode', geoCode)
+            socket.emit('newGeoCode', geoCode)
+          })
+          socket.on('disconnect', function(){
+            console.log('user disconnected');
           })
         })
       }
+      // var received = 'Stream is initiated'
+      // res.send(received)
     })
 
     stream.on('error', function(error) {
       throw error
     })
   })
-})
-
-io.on('connection', function(socket) {
-  socket.emit('news')
 })
 
 

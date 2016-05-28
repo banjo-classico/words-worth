@@ -1,8 +1,7 @@
 const request = require('superagent')
 const $ = require('jquery')
 const d3 = require('./d3')
-const map = d3.worldMap()
-const twitter = require('./twitter')
+//const twitter = require('./twitter')
 require('dotenv').config()
 
 
@@ -70,19 +69,25 @@ $('document').ready(function() {
   //   })
   // })
 
-  var socket = io.connect('http://localhost')
 
   $('#streamform').on('click', function() {
-    socket.emit()
     var mainWord = $('#stream-search').val()
     request
       .post('/stream')
       .send({searchterm: mainWord})
       .end(function(err, res) {
         if (err) throw err
-
-        map.addGeoData(res)
+        console.log(res)
       })
   })
 
+  var socket = io.connect()
+  window.socket = socket
+
+  socket.on('newGeoCode', function(geoCode) {
+    //do something
+    console.log(geoCode)
+    d3.worldMap.addGeoData(geoCode)
+    d3.worldMap()
+  })
 })

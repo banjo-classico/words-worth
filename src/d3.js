@@ -84,7 +84,7 @@ function worldMap() {
         .attr('d', path)
         .attr('stroke', '#fff')
         .attr('stroke-width', '0.25px')
-        .attr('fill', '#666')
+        .attr('fill', '#777')
   }
 
   var startPingRadius = 5,
