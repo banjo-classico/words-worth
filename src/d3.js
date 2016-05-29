@@ -1,15 +1,11 @@
 const d3 = require('d3')
-const topojson = require('topojson')
-
-function makeGraph(dataSource, dock, labels) {
-
-var width = 500
-var height = dataSource.length*31
+//const topojson = require('topojson')
+var width = 400
+var height = 400
 var padding = 1
 
-var labelScale = d3.scale.linear()
-                .domain([50, 1])
-                .range([6, 20])
+function makeGraph(dataSource) {
+
 
 var dataScale = d3.scale.linear()
                 .domain([0, d3.max(dataSource)])
@@ -19,7 +15,7 @@ var colorScale = d3.scale.linear()
                 .domain([0, d3.max(dataSource)])
                 .range(['red', 'blue'])
 
-var canvas = d3.select(dock)
+var canvas = d3.select('#graph')
               .append('svg')
               .attr('width', width)
               .attr('height', height)
@@ -28,13 +24,13 @@ var bars = canvas.selectAll('rect')
             .data(dataSource)
             .enter()
               .append('rect')
-              .attr('width', function(d) {return dataScale(d)})
+              .attr('width', function(d) {return d*2})
               .attr('height', 30)
               .attr('y', function(d, i) {return i*31})
               .attr('fill', function(d) {return colorScale(d)})
 
 var labels = canvas.selectAll('text')
-            .data(labels)
+            .data(dataSource)
             .enter()
               .append('text')
               .attr('x', 10)
@@ -43,6 +39,11 @@ var labels = canvas.selectAll('text')
               .attr('font-family', 'sans-serif')
               .attr('font-size', '12px')
               .attr('fill', '#fff')
+}
+
+
+module.exports = {
+  makeGraph: makeGraph,
 }
 
 //==================== OLD VERSION =====================>

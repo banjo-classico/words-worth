@@ -5,8 +5,6 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const retina = require('./src/retina')
-const twitter = require('./src/twitter')
-const geo = require('./src/geoCoder')
 //const wordnik = require('wordnik-bb').init(process.env.)
 const cors = require('cors')
 
@@ -27,7 +25,7 @@ io.on('connection', function(socket) {
 
   socket.on('player', function(player) {
     playername = player
-    io.emit('player entry', 'Player ' + playerNumber.toString() + ': ' + playername)
+    io.emit('player entry', {player: playerNumber, text: 'Player ' + playerNumber.toString() + ': ' + playername})
   })
   var randomWord = 'elephant'
   // socket.on('get random', function() {
@@ -46,6 +44,10 @@ io.on('connection', function(socket) {
   socket.on('non-word', function(score) {
     socket.emit('score', score)
     console.log('not a valid word')
+  })
+
+  socket.on('update graph', function(graph) {
+    socket.broadcast.emit('update graph', graph)
   })
 
   socket.on('disconnect', function() {

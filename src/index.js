@@ -4,7 +4,7 @@ const play = require('./game-centre')
 
 
 var socket = io()
-//var playerNumber
+var playerNumber = 5
 
 $('document').ready(function() {
 
@@ -12,6 +12,7 @@ $('document').ready(function() {
     e.preventDefault()
     if (/[a-z, A-Z, 0-9]/g.test($('#playername').val())) {
       playGame()
+      d3.makeGraph(play.getCurrentScores())
     }
   })
 
@@ -28,7 +29,9 @@ $('document').ready(function() {
 
 
     socket.on('player entry', function(info) {
-      $('#player-display').append($('<li>').text(info))
+      $('#player-display').append($('<li>').text(info.text))
+      playerNumber = info.player
+      console.log('PLAYER: ', playerNumber)
     })
 
     $('#attempt').submit(function(e) {
@@ -48,8 +51,14 @@ $('document').ready(function() {
     })
 
     socket.on('score', function(score) {
-      play.updateScore(score)
-      d3.makeGraph()
+      play.updateScore(score, playerNumber)
+      $('#graph').empty()
+      d3.makeGraph(play.getCurrentScores())
+      socket.emit('update graph', $('svg'))
+    })
+
+    socket.on('update graph', function(graph) {
+      $('#graph').append(graph)
     })
 
 

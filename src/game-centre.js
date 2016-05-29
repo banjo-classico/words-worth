@@ -1,4 +1,10 @@
-var playerScores = {'player1': 0, 'player2': 0, 'player3': 0, 'player4': 0}
+var playerScores = {
+  '1': 0, 
+  '2': 0, 
+  '3': 0, 
+  '4': 0
+}
+
 var usedWords = []
 
 function checkWord(word) {
@@ -14,17 +20,28 @@ function checkWord(word) {
   }
 }
 
-function updateScore(score) {
+function updateScore(score, player) {
   score = Math.floor(score)
   console.log(score)
   var playerScore = parseInt($('#player-score').text(), 10)
   playerScore += score
   $('#player-score').append('<p>').text(playerScore)
+  playerScores[player] = playerScore
+}
+
+function getCurrentScores() {
+  console.log(playerScores)
+  var scores = Object.keys(playerScores).map(function(key) {
+    return playerScores[key]
+  })
+  return scores
+
 }
 
 
 
 module.exports = {
   checkWord: checkWord,
-  updateScore: updateScore
+  updateScore: updateScore,
+  getCurrentScores: getCurrentScores
 }
