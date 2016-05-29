@@ -1,0 +1,13 @@
+body {
+  padding: 1%;
+  background-color: black;
+  color: #fff;
+}
+
+#game {
+  display: none;
+  color: #fff;
+}
+
+header { 
+color: #fff; }

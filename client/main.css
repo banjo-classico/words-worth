@@ -4,11 +4,6 @@ body {
   color: #dcdcdc;
 }
 
-/*.wrap {
-  position: relative;
-  height: 670px;
-}*/
-
 a {
   text-decoration: none;
   color: #666;
@@ -42,10 +37,6 @@ nav li {
 .main, .twitter{
   text-align: center;
 }
-
-/*.container {
-  display: flex;
-}*/
 
 h1 {
   color: #fff;
@@ -144,10 +135,6 @@ g {
 }
 
 /*--------------------------BACKTWEET BOY--------------*/
-
-/*#tweet {
-  display: flex;
-}*/
 
 #tweet-header {
   text-align: left;

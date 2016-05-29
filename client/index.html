@@ -3,6 +3,62 @@
 <head>
   <title>Word's Worth</title>
   <meta charset="utf-8">
+  <link  rel="stylesheet" type="text/css" href="/game.css">
+  <link rel="stylesheet" type="text/css" href="/skeleton.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <div class=wrap>
+    <header class="title">
+      <h1>Word's Worth</h1>
+    </header>
+    <section class="main" id="main">
+      <form id="enterName">
+        <input id="playername" type="text" placeholder="Enter player name">
+      </form>
+      <div class="container" id="game">
+       <div class="row">
+        <div id="" class="three columns">
+
+          <h3>Players</h3>
+          <ul id=player-display>
+          </ul>
+        </div>
+          <div id="random-word">
+            <p>Random word</p>
+          </div>
+        <div id="gameplay" class="six columns">
+          <div id="result-container">
+            <div id="graph"></div>
+          </div>
+          <div>
+            <p>Enter your word, hit return</p>
+            <form id="attempt">
+              <input placeholder="try a word" type="text" id="player-word">
+            </form>
+          </div>
+        </div>
+          <div id="game info" class="three columns">
+            <h3>Game Info</h3>
+            <div id="used-words"><h5>Used Words</h5></div>
+            <div><h5>Score</h5><p id="player-score">0</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src='bundle.js'></script>
+</body>
+
+<!-- ============= OLD VERSION ============== -->
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Word's Worth</title>
+  <meta charset="utf-8">
   <link  rel="stylesheet" type="text/css" href="/main.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -25,7 +81,6 @@
   <div class=wrap>
     <nav>
       <ul>
-        <!-- <li><a href="#">text finder</a></li> -->
         <li><a href="#twitter">compare hashtags</a></li>
         <li><a href="#twit-stream">world tweets</a></li>
         <li><a href="#main">home</a></li>
@@ -104,4 +159,4 @@
   </div>
     <script src='bundle.js'></script>
 </body>
-</html>
+</html> -->
