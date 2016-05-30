@@ -3,6 +3,7 @@ const d3 = require('d3')
 var width = 400
 var height = 400
 var padding = 1
+var userData = ['P1', 'P2', 'P3', 'P4']
 
 function makeGraph(dataSource) {
 
@@ -30,7 +31,7 @@ var bars = canvas.selectAll('rect')
               .attr('fill', function(d) {return colorScale(d)})
 
 var labels = canvas.selectAll('text')
-            .data(dataSource)
+            .data()
             .enter()
               .append('text')
               .attr('x', 10)

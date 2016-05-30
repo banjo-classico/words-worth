@@ -1,10 +1,11 @@
 // const $ = require('jquery')
 const d3 = require('./d3')
-const play = require('./game-centre')
+const g = require('./game-centre')
 
 
 var socket = io()
-var playerNumber = 5
+var playerNumber
+var cPlayers
 
 $('document').ready(function() {
 
@@ -12,7 +13,7 @@ $('document').ready(function() {
     e.preventDefault()
     if (/[a-z, A-Z, 0-9]/g.test($('#playername').val())) {
       playGame()
-      d3.makeGraph(play.getCurrentScores())
+      d3.makeGraph($('#player-scores').children().text())
     }
   })
 
@@ -29,15 +30,18 @@ $('document').ready(function() {
 
 
     socket.on('player entry', function(info) {
-      $('#player-display').append($('<li>').text(info.text))
-      playerNumber = info.player
+      cPlayers = info.pArray
+      var text = 'Player ' + info.pArray.length.toString() + ': ' + info.name
+      $('#p' + info.pArray.length).text(text)
+      playerNumber = info.pArray.length
       console.log('PLAYER: ', playerNumber)
     })
 
     $('#attempt').submit(function(e) {
       e.preventDefault()
       var playerWord = $('#player-word').val()
-      if (play.checkWord(playerWord)) {
+      var usedWords = $('#used-words').children().text()  
+      if (g.checkWord(playerWord, usedWords)) {
         $('#used-words').append($('<li>').text(playerWord))
         socket.emit('player word', playerWord)
       } else {
@@ -51,10 +55,29 @@ $('document').ready(function() {
     })
 
     socket.on('score', function(score) {
-      play.updateScore(score, playerNumber)
+      console.log(cPlayers, socket.id)
+      g.updateScore(score, socket.id, cPlayers)
       $('#graph').empty()
-      d3.makeGraph(play.getCurrentScores())
-      socket.emit('update graph', $('svg'))
+      var scores = $('.score').toArray().map(function(e) {
+        return e.innerHTML
+      })
+      d3.makeGraph(scores)
+      socket.emit('update', {
+        graph: $('svg'),
+        scores: $('.score'),
+        players: $('.player')
+      })
+    })
+
+    socket.on('update', function(updateOject) {
+      console.log(updateOject)
+      $('#result-container').updateOject.graph
+      $('#player-scores').updateOject.scores
+      $('#player-display').updateOject.players
+    })
+
+    socket.on('update scoreboard', function(board) {
+      $('#player-scores').append(board)
     })
 
     socket.on('update graph', function(graph) {

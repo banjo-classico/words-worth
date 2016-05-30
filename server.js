@@ -5,6 +5,7 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const retina = require('./src/retina')
+const g = require('./src/game-centre')
 //const wordnik = require('wordnik-bb').init(process.env.)
 const cors = require('cors')
 
@@ -17,15 +18,17 @@ app.get('/', function(req, res) {
 })
 
 
-var players = [1, 2, 3, 4]
+var players = []
+var playername = ''
+
 io.on('connection', function(socket) {
-  var playername = ''
-  console.log(players)
-  var playerNumber = players.shift()
 
   socket.on('player', function(player) {
+    players.push(socket.id)
+    var playerNumber = players.length
+    console.log(players)
     playername = player
-    io.emit('player entry', {player: playerNumber, text: 'Player ' + playerNumber.toString() + ': ' + playername})
+    io.emit('player entry', {name: player, pArray: players})
   })
   var randomWord = 'elephant'
   // socket.on('get random', function() {
@@ -46,12 +49,21 @@ io.on('connection', function(socket) {
     console.log('not a valid word')
   })
 
+  socket.on('update', function(updateObject) {
+    console.log('receiving!')
+    socket.broadcast.emit('update', updateObject)
+  })
+
+
+  socket.on('update scoreboard', function(board) {
+    socket.broadcast.emit('update scoreboard', board)
+  })
+
   socket.on('update graph', function(graph) {
     socket.broadcast.emit('update graph', graph)
   })
 
   socket.on('disconnect', function() {
-    players.push(4 - players.length)
     io.emit('player exit', playername)
     console.log('a user disconnected')
   })
