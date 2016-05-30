@@ -23,7 +23,7 @@ $('document').ready(function() {
     var player = $('#playername').val()
     socket.emit('player', player)
     $('.login').hide()
-    $('#title1').hide()
+    $('.title').hide()
     $('h2').show()
     $('#game').show()
     socket.on('random word', function(word) {

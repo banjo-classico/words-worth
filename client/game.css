@@ -21,8 +21,14 @@ header {
 
 h1 {
   font-family: 'Great Vibes', cursive;
-  margin-top: 50px;
+  margin-top: 80px;
   color: #fff;
+}
+
+#logo {
+  height: 70px;
+  float: center;
+  margin-bottom: -50px;
 }
 
 h2 {
