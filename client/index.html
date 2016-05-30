@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <link  rel="stylesheet" type="text/css" href="/game.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
+  <link href='https://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
@@ -12,49 +14,57 @@
 
   <div class=wrap>
     <header class="title">
-      <h1>Word's Worth</h1>
+      <h1 id='title1'>Word's Worth</h1>
     </header>
     <section class="main" id="main">
-      <form id="enterName">
-        <input id="playername" type="text" placeholder="Enter player name">
-      </form>
+      <div class='login'>
+        <h4>Enter your player name</h4>
+        <form id="enterName">
+          <input id="playername" type="text" placeholder="Enter player name">
+        </form>
+      </div>
       <div class="container" id="game">
+       <div class='row'>
+        <div class='three columns'><h2 id='title2'>Word's Worth</h2></div>
+       </div>
        <div class="row">
-        <div id="" class="three columns">
-
-          <h3>Players</h3>
-          <ul id=player-display>
-            <li class="player" id="p1"></li>
-            <li class="player" id="p2"></li>
-            <li class="player" id="p3"></li>
-            <li class="player" id="p4"></li>
-          </ul>
-        </div>
-          <div id="random-word">
-            <p>Random word</p>
+        <div id="players" class="three columns">
+          <div id='player-names'>
+            <h5>Players</h5>
+            <ul id=player-display>
+              <li class="player" id="p1"></li>
+              <li class="player" id="p2"></li>
+              <li class="player" id="p3"></li>
+              <li class="player" id="p4"></li>
+            </ul>
           </div>
+          <div id='scores'>
+            <h5>Scores</h5>
+            <div id="player-scores">
+              <div><p class="score" id="1">0</p></div>
+              <div><p class="score" id="2">0</p></div>
+              <div><p class="score" id="3">0</p></div>
+              <div><p class="score" id="4">0</p></div>
+            </div>
+          </div>
+        </div>
         <div id="gameplay" class="six columns">
+          <div id="random-word">
+            <h3>elephant</h3>
+          </div>
           <div id="result-container">
             <div id="graph"></div>
           </div>
-          <div>
+          <div id='player-input'>
             <p>Enter your word, hit return</p>
             <form id="attempt">
               <input placeholder="try a word" type="text" id="player-word">
             </form>
           </div>
         </div>
-          <div id="game info" class="three columns">
-            <h3>Game Info</h3>
-            <div id="used-words"><h5>Used Words</h5></div>
-            <div>
-              <h5>Scores</h5>
-              <div id="player-scores">
-                <div><p class="score" id="1">0</p></div>
-                <div><p class="score" id="2">0</p></div>
-                <div><p class="score" id="3">0</p></div>
-                <div><p class="score" id="4">0</p></div>
-              </div>
+          <div id="game-info" class="three columns">
+            <div id="used-words">
+              <h5>Used Words</h5>
             </div>
           </div>
         </div>

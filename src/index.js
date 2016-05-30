@@ -22,7 +22,9 @@ $('document').ready(function() {
     socket.emit('get random')
     var player = $('#playername').val()
     socket.emit('player', player)
-    $('#enterName').hide()
+    $('.login').hide()
+    $('#title1').hide()
+    $('h2').show()
     $('#game').show()
     socket.on('random word', function(word) {
     $('#random-word').append('<h3>').text(word)
