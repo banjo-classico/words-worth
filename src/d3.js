@@ -3,9 +3,8 @@ const d3 = require('d3')
 var width = 400
 var height = 400
 var padding = 1
-var userData = ['P1', 'P2', 'P3', 'P4']
 
-function makeGraph(dataSource) {
+function makeGraph(dataSource, userData) {
 
 
 var dataScale = d3.scale.linear()
@@ -27,7 +26,7 @@ var bars = canvas.selectAll('rect')
               .append('rect')
               .attr('height', function(d) {return d*5})
               .attr('width', width/dataSource.length-5)
-              .attr('x', function(d, i) {return i* (width/dataSource.length)})
+              .attr('x', function(d, i) {return i*(width/userData.length) + ((width/userData.length)/2) - 48})
               .attr('y', function(d) {return height - d*5})
               .attr('fill', function(d, i) {return colorScale(i)})
 
@@ -35,7 +34,7 @@ var labels = canvas.selectAll('text')
             .data(userData)
             .enter()
               .append('text')
-              .attr('x', function(d, i) {return i*(width/dataSource.length) + (width/dataSource.length - 5)/2})
+              .attr('x', function(d, i) {return i*(width/userData.length) + (width/userData.length - 5)/2})
               .attr('y', 390)
               .text(function(d) {return d})
               .attr('font-family', 'sans-serif')

@@ -26,6 +26,16 @@ function getPlayerIndex(id, array) {
   return array.indexOf(id) + 1
 }
 
+function changeTurn(prev, length) {
+  var nextTurn
+  if (prev < length) {
+    nextTurn = prev + 1
+  } else {
+    nextTurn = prev - (length-1)
+  }
+  return nextTurn
+}
+
 function initialiseGameObj() {
   return gameObj = {
     players: {
@@ -33,8 +43,8 @@ function initialiseGameObj() {
     },
     scores: {
       1: 0, 2: 0, 3: 0, 4: 0
-    }, 
-    graph: ''
+    },
+    class: {1: 'turn', 2: '', 3: '', 4: ''} 
   }
 }
 
@@ -42,6 +52,7 @@ function updateGame(gameState) {
   for (var i = 1; i < 5; i++) {
     $('#p' + i).text(gameState.players[i])
     $('#' + i).text(gameState.scores[i])
+    $('#p' + i).addClass(gameState.class[i])
   }
   // $('#graph').append()
 }
@@ -52,10 +63,10 @@ function updateGameState(data, gameState){
       gameState.players[data.player] = data.text
       break
     case 'score':
-      gameState.scores[data.player] = data.score
+      gameState.scores[data.player] += data.score
       break
-    case 'graph':
-      gameState.graph = data.graph
+    case 'class':
+      gameState.class[data.player] = data.class
   }
 }
 
@@ -65,6 +76,7 @@ module.exports = {
   getPlayerIndex: getPlayerIndex,
   initialiseGameObj: initialiseGameObj,
   updateGame: updateGame,
-  updateGameState: updateGameState
+  updateGameState: updateGameState,
+  changeTurn: changeTurn
   // makeUpdateObject: makeUpdateObject
 }

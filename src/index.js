@@ -4,12 +4,16 @@ const g = require('./game-centre')
 
 
 var socket = io()
-var playerNumber
 var players
+var users = ['P1', 'P2', 'P3', 'P4']
 
 $('document').ready(function() {
 
   socket.on('initialise game', function(gameState) {
+    $('.login').show()
+      $('.title').show()
+      $('h2').hide()
+      $('#game').hide()
     g.updateGame(gameState)
   })
 
@@ -17,7 +21,7 @@ $('document').ready(function() {
     e.preventDefault()
     if (/[a-z, A-Z, 0-9]/g.test($('#playername').val())) {
       playGame()
-      d3.makeGraph($('#player-scores').children().text())
+      d3.makeGraph($('#player-scores').children().text(), ['','','',''])
       $('.login').hide()
       $('.title').hide()
       $('h2').show()
@@ -40,8 +44,6 @@ $('document').ready(function() {
       players = data.pArray
       var text = 'Player ' + players.length.toString() + ': ' + data.name
       $('#p' + players.length).text(text)
-      playerNumber = players.length
-      console.log('PLAYER: ', playerNumber)
       socket.emit('update state', {player: players.length, text: text})
     })
 
@@ -56,6 +58,9 @@ $('document').ready(function() {
         socket.emit('non-word', 0)
       }
       $('#player-word').val('')
+      var nextTurn = g.changeTurn($('.turn').attr('id').slice(1), players.length)
+      $('#p' + g.getPlayerIndex(socket.id, players)).removeClass('turn')
+      socket.emit('update state', {class: 'turn', player: nextTurn})
     })
 
     socket.on('player word', function(word){
@@ -69,7 +74,7 @@ $('document').ready(function() {
       })
       console.log('Im here!!')
       $('#graph').empty()
-      d3.makeGraph(scores)
+      d3.makeGraph(scores, users.slice(0, players.length))
     })
 
     socket.on('score', function(score) {

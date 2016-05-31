@@ -31,14 +31,26 @@ h1 {
   margin-bottom: -50px;
 }
 
-h2 {
+#top-links {
+  display: flex;
+  justify-content: space-between;
+}
+
+#title2, #new-game {
   font-family: 'Great Vibes', cursive;
-  font-size: 5rem;
+  font-size: 4rem;
   color: #fff;
-  float: left;
-  margin-left: -100px;
   margin-top: -100px;
   display: none;
+}
+
+#title2 {
+  float: left;
+  margin-left: -100px;
+}
+
+#new-game {
+  float: right;
 }
 
 h4 {
@@ -91,7 +103,12 @@ li {
 
 
 .player {
-  font-size: 1.5rem;
+  font-size: 1.5rem; 
+}
+
+.turn {
+  background-color: white;
+  color: black;
 }
 
 #player-input {
