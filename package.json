@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "play": "npm run watch & nodemon server.js",
     "start": "node server.js",
     "build": "browserify . -o client/bundle.js -g uglifyify",
     "watch": "watchify ./src/index.js -o ./client/bundle.js -dv"
@@ -26,13 +27,10 @@
     "d3": "^3.5.17",
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
-    "geocoder": "^0.2.2",
     "jquery": "^2.2.4",
     "promise": "^7.1.1",
     "socket.io": "^1.4.6",
     "superagent": "^2.0.0-alpha.3",
-    "topojson": "^1.6.26",
-    "twitter": "^1.3.0",
     "wordnik-bb": "^0.1.1"
   },
   "devDependencies": {
