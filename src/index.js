@@ -32,7 +32,7 @@ $('document').ready(function() {
 
 
     socket.on('player entry', function(info) {
-      cPlayers = info.pArray
+      players = info.pArray
       var text = 'Player ' + info.pArray.length.toString() + ': ' + info.name
       $('#p' + info.pArray.length).text(text)
       playerNumber = info.pArray.length
@@ -57,8 +57,8 @@ $('document').ready(function() {
     })
 
     socket.on('score', function(score) {
-      console.log(cPlayers, socket.id)
-      g.updateScore(score, socket.id, cPlayers)
+      console.log(players, socket.id)
+      g.updateScore(score, socket.id, players)
       $('#graph').empty()
       var scores = $('.score').toArray().map(function(e) {
         return e.innerHTML
