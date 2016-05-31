@@ -20,7 +20,20 @@ function buildTerms(mainTerm, keyWord) {
   return [{"term": mainTerm}, {"term": keyWord}]
 }
 
+// function getRandomWord(callback) {
+//   request
+//     .get('http://randomword.setgetgo.com/get.php')
+//     .end(function(err, res) {
+//       if (err) {
+//         console.log(err)
+//       } else {
+//         callback(err, res.body)
+//       }
+//     })
+// }
+
 module.exports = {
   compareTerms: compareTerms,
-  buildTerms: buildTerms
+  buildTerms: buildTerms,
+  // getRandomWord: getRandomWord
 }

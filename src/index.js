@@ -5,18 +5,23 @@ const g = require('./game-centre')
 
 var socket = io()
 var playerNumber
-var gameObj
+var players
 
 $('document').ready(function() {
 
-  gameObj = g.initialiseGameObj()
-
+  socket.on('initialise game', function(gameState) {
+    g.updateGame(gameState)
+  })
 
   $('#enterName').submit(function(e) {
     e.preventDefault()
     if (/[a-z, A-Z, 0-9]/g.test($('#playername').val())) {
       playGame()
       d3.makeGraph($('#player-scores').children().text())
+      $('.login').hide()
+      $('.title').hide()
+      $('h2').show()
+      $('#game').show()
     }
   })
 
@@ -24,24 +29,20 @@ $('document').ready(function() {
     console.log("Game is initiated")
     socket.emit('get random')
     var player = $('#playername').val()
+
     socket.emit('player', player)
-    $('.login').hide()
-    $('.title').hide()
-    $('h2').show()
-    $('#game').show()
+
     socket.on('random word', function(word) {
-    $('#random-word').append('<h3>').text(word)
+      $('#random-word').text(word)
     })
 
-
-    socket.on('player entry', function(info) {
-      players = info.pArray
-      var text = 'Player ' + info.pArray.length.toString() + ': ' + info.name
-      $('#p' + info.pArray.length).text(text)
-      playerNumber = info.pArray.length
+    socket.on('player entry', function(data) {
+      players = data.pArray
+      var text = 'Player ' + players.length.toString() + ': ' + data.name
+      $('#p' + players.length).text(text)
+      playerNumber = players.length
       console.log('PLAYER: ', playerNumber)
-      g.updateGame(gameObj)
-      socket.emit('update', gameObj)
+      socket.emit('update state', {player: players.length, text: text})
     })
 
     $('#attempt').submit(function(e) {
@@ -61,32 +62,37 @@ $('document').ready(function() {
       $('#used-words').append($('<li>').text(word))
     })
 
-    socket.on('score', function(score) {
-      console.log(players, socket.id)
-      g.updateScore(score, socket.id, players)
-      $('#graph').empty()
+    socket.on('update game', function(gameState) {
+      g.updateGame(gameState)
       var scores = $('.score').toArray().map(function(e) {
         return e.innerHTML
       })
+      console.log('Im here!!')
+      $('#graph').empty()
       d3.makeGraph(scores)
-      g.updateGame(gameObj)
-      socket.emit('update', gameObj)
     })
 
-    socket.on('update', function(updateObj) {
-      console.log("UPDATEOBJ: ", updateObj)
-      $('#result-container').replaceWith(updateObj.graph)
-      $('#player-scores').replaceWith(updateObj.scores)
-      $('#player-display').replaceWith(updateObj.players)
+    socket.on('score', function(score) {
+      score = Math.floor(score)
+      var player = g.getPlayerIndex(socket.id, players)
+      console.log("PLAYERID: ", player)
+      socket.emit('update state', {score: score, player: player})
     })
 
-    socket.on('update scoreboard', function(board) {
-      $('#player-scores').append(board)
-    })
+    // socket.on('update', function(updateObj) {
+    //   console.log("UPDATEOBJ: ", updateObj)
+    //   $('#result-container').replaceWith(updateObj.graph)
+    //   $('#player-scores').replaceWith(updateObj.scores)
+    //   $('#player-display').replaceWith(updateObj.players)
+    // })
 
-    socket.on('update graph', function(graph) {
-      $('#graph').append(graph)
-    })
+    // socket.on('update scoreboard', function(board) {
+    //   $('#player-scores').append(board)
+    // })
+
+    // socket.on('update graph', function(graph) {
+    //   $('#graph').append(graph)
+    // })
 
 
   }

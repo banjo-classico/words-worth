@@ -26,33 +26,45 @@ function getPlayerIndex(id, array) {
   return array.indexOf(id) + 1
 }
 
-// function makeUpdateObject() {
-//   console.log('Im in an object')
-//   return {
-//     graph: $('svg'),
-//     scores: $('.score'),
-//     players: $('.player')
-//   }
-// }
 function initialiseGameObj() {
   return gameObj = {
-    graph: $('#result-container'),
-    scores: $('#player-scores'),
-    players: $('#player-display')
+    players: {
+      1: '', 2: '', 3: '', 4: ''
+    },
+    scores: {
+      1: 0, 2: 0, 3: 0, 4: 0
+    }, 
+    graph: ''
   }
 }
 
-function updateGame(gameObj) {
-  gameObj.graph = $('#result-container')
-  gameObj.scores = $('#player-scores'),
-  gameObj.players = $('#player-display')
+function updateGame(gameState) {
+  for (var i = 1; i < 5; i++) {
+    $('#p' + i).text(gameState.players[i])
+    $('#' + i).text(gameState.scores[i])
+  }
+  // $('#graph').append()
 }
 
+function updateGameState(data, gameState){
+  switch (Object.keys(data)[0]) {
+    case 'player': 
+      gameState.players[data.player] = data.text
+      break
+    case 'score':
+      gameState.scores[data.player] = data.score
+      break
+    case 'graph':
+      gameState.graph = data.graph
+  }
+}
 
 module.exports = {
   checkWord: checkWord,
   updateScore: updateScore,
+  getPlayerIndex: getPlayerIndex,
   initialiseGameObj: initialiseGameObj,
-  updateGame: updateGame
+  updateGame: updateGame,
+  updateGameState: updateGameState
   // makeUpdateObject: makeUpdateObject
 }

@@ -20,8 +20,12 @@ app.get('/', function(req, res) {
 
 var players = []
 var playername = ''
+var gameState = g.initialiseGameObj()
 
 io.on('connection', function(socket) {
+
+  console.log('Player connected')
+  socket.emit('initialise game', gameState)
 
   socket.on('player', function(player) {
     players.push(socket.id)
@@ -30,10 +34,16 @@ io.on('connection', function(socket) {
     playername = player
     io.emit('player entry', {name: player, pArray: players})
   })
-  var randomWord = 'elephant'
+
+  var randomWord = 'penguin'
   // socket.on('get random', function() {
-  //   randomWord = wordnik.RandomWord()
-  //   socket.emit('random word', randomWord)
+  //   randomWord = retina.getRandomWord(function(err, res) {
+  //     if (err) console.log(err)
+  //     else {
+  //       console.log("RANDOM: ", res)
+  //       socket.emit('random word', res)
+  //     }
+  //   })
   // })
 
   socket.on('player word', function(word) {
@@ -49,18 +59,10 @@ io.on('connection', function(socket) {
     console.log('not a valid word')
   })
 
-  socket.on('update', function(gameObj) {
-    console.log('receiving!')
-    socket.broadcast.emit('update', gameObj)
-  })
-
-
-  socket.on('update scoreboard', function(board) {
-    socket.broadcast.emit('update scoreboard', board)
-  })
-
-  socket.on('update graph', function(graph) {
-    socket.broadcast.emit('update graph', graph)
+  socket.on('update state', function(data) {
+    g.updateGameState(data, gameState)
+    io.emit('update game', gameState)
+    console.log('state updated')
   })
 
   socket.on('disconnect', function() {
