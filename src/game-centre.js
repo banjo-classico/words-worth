@@ -34,13 +34,25 @@ function getPlayerIndex(id, array) {
 //     players: $('.player')
 //   }
 // }
-function updateGame() {
+function initialiseGameObj() {
+  return gameObj = {
+    graph: $('#result-container'),
+    scores: $('#player-scores'),
+    players: $('#player-display')
+  }
+}
 
+function updateGame(gameObj) {
+  gameObj.graph = $('#result-container')
+  gameObj.scores = $('#player-scores'),
+  gameObj.players = $('#player-display')
 }
 
 
 module.exports = {
   checkWord: checkWord,
   updateScore: updateScore,
+  initialiseGameObj: initialiseGameObj,
+  updateGame: updateGame
   // makeUpdateObject: makeUpdateObject
 }

@@ -49,9 +49,9 @@ io.on('connection', function(socket) {
     console.log('not a valid word')
   })
 
-  socket.on('update', function(updateObject) {
+  socket.on('update', function(gameObj) {
     console.log('receiving!')
-    socket.broadcast.emit('update', updateObject)
+    socket.broadcast.emit('update', gameObj)
   })
 
 

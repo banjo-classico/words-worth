@@ -5,9 +5,12 @@ const g = require('./game-centre')
 
 var socket = io()
 var playerNumber
-var cPlayers
+var gameObj
 
 $('document').ready(function() {
+
+  gameObj = g.initialiseGameObj()
+
 
   $('#enterName').submit(function(e) {
     e.preventDefault()
@@ -37,6 +40,8 @@ $('document').ready(function() {
       $('#p' + info.pArray.length).text(text)
       playerNumber = info.pArray.length
       console.log('PLAYER: ', playerNumber)
+      g.updateGame(gameObj)
+      socket.emit('update', gameObj)
     })
 
     $('#attempt').submit(function(e) {
@@ -64,18 +69,15 @@ $('document').ready(function() {
         return e.innerHTML
       })
       d3.makeGraph(scores)
-      socket.emit('update', {
-        graph: $('svg'),
-        scores: $('.score'),
-        players: $('.player')
-      })
+      g.updateGame(gameObj)
+      socket.emit('update', gameObj)
     })
 
-    socket.on('update', function(updateOject) {
-      console.log(updateOject)
-      $('#result-container').updateOject.graph
-      $('#player-scores').updateOject.scores
-      $('#player-display').updateOject.players
+    socket.on('update', function(updateObj) {
+      console.log("UPDATEOBJ: ", updateObj)
+      $('#result-container').replaceWith(updateObj.graph)
+      $('#player-scores').replaceWith(updateObj.scores)
+      $('#player-display').replaceWith(updateObj.players)
     })
 
     socket.on('update scoreboard', function(board) {
