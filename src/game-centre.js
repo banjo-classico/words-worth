@@ -9,25 +9,25 @@ function checkWord(word, usedWords) {
   }
 }
 
-function updateScore(score, playerId, array) {
-  score = Math.floor(score)
-  var id = getPlayerIndex(playerId, array)
-  scoreDiv = $('#' + id)
-  var playerScore = parseInt(scoreDiv.text(), 10)
-  playerScore += score
-  scoreDiv.empty()
-  scoreDiv.text(playerScore)
+// function updateScore(score, playerId, array) {
+//   score = Math.floor(score)
+//   var id = getPlayerIndex(playerId, array)
+//   scoreDiv = $('#' + id)
+//   var playerScore = parseInt(scoreDiv.text(), 10)
+//   playerScore += score
+//   scoreDiv.empty()
+//   scoreDiv.text(playerScore)
 
-}
+// }
 
 function getPlayerIndex(id, array) {
   id = "/#" + id
-  console.log(id)
   return array.indexOf(id) + 1
 }
 
 function changeTurn(prev, length) {
   var nextTurn
+  prev = parseInt(prev)
   if (prev < length) {
     nextTurn = prev + 1
   } else {
@@ -44,20 +44,26 @@ function initialiseGameObj() {
     scores: {
       1: 0, 2: 0, 3: 0, 4: 0
     },
-    class: {1: 'turn', 2: '', 3: '', 4: ''} 
+    turn: {1: 'turn', 2: '', 3: '', 4: ''},
+    hide: {1: 'hide', 2: 'hide', 3: 'hide', 4: 'hide'} 
   }
 }
 
-function updateGame(gameState) {
-  for (var i = 1; i < 5; i++) {
+
+
+function updateGame(gameState, num) {
+  for (var i = 1; i <= num ; i++) {
     $('#p' + i).text(gameState.players[i])
     $('#' + i).text(gameState.scores[i])
-    $('#p' + i).addClass(gameState.class[i])
+    if ($('#p' + i).hasClass('turn')) {
+      $('#p' + i).removeClass('turn')
+    }
+    $('#p' + i).addClass(gameState.turn[i])
   }
-  // $('#graph').append()
 }
 
-function updateGameState(data, gameState){
+function updateGameState(data, gameState, num){
+  console.log("PLAYERS: ", num)
   switch (Object.keys(data)[0]) {
     case 'player': 
       gameState.players[data.player] = data.text
@@ -65,18 +71,33 @@ function updateGameState(data, gameState){
     case 'score':
       gameState.scores[data.player] += data.score
       break
-    case 'class':
-      gameState.class[data.player] = data.class
+    case 'turn':
+      gameState.turn[data.player] = data.turn
+      if (data.player === 1) {
+        gameState.turn[num] = ''
+      } else {
+        gameState.turn[data.player - 1] = ''
+      }
+      break
+  }
+}
+
+function removePlayer(id, array) {
+  var index = array.indexOf(id)
+  if (index > -1) {
+    var removed = array.splice(index, 1)
+    return array
   }
 }
 
 module.exports = {
   checkWord: checkWord,
-  updateScore: updateScore,
+  //updateScore: updateScore,
   getPlayerIndex: getPlayerIndex,
   initialiseGameObj: initialiseGameObj,
   updateGame: updateGame,
   updateGameState: updateGameState,
-  changeTurn: changeTurn
+  changeTurn: changeTurn, 
+  removePlayer: removePlayer
   // makeUpdateObject: makeUpdateObject
 }

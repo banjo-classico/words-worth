@@ -4,7 +4,7 @@ const g = require('./game-centre')
 
 
 var socket = io()
-var players
+var players = []
 var users = ['P1', 'P2', 'P3', 'P4']
 
 $('document').ready(function() {
@@ -14,7 +14,6 @@ $('document').ready(function() {
       $('.title').show()
       $('h2').hide()
       $('#game').hide()
-    g.updateGame(gameState)
   })
 
   $('#enterName').submit(function(e) {
@@ -44,7 +43,12 @@ $('document').ready(function() {
       players = data.pArray
       var text = 'Player ' + players.length.toString() + ': ' + data.name
       $('#p' + players.length).text(text)
+      $('#' + players.length).text(0)
       socket.emit('update state', {player: players.length, text: text})
+    })
+
+    socket.on('update board', function(board) {
+      $('#board').append(board)
     })
 
     $('#attempt').submit(function(e) {
@@ -58,9 +62,10 @@ $('document').ready(function() {
         socket.emit('non-word', 0)
       }
       $('#player-word').val('')
+      //toggle turn highlighter
       var nextTurn = g.changeTurn($('.turn').attr('id').slice(1), players.length)
-      $('#p' + g.getPlayerIndex(socket.id, players)).removeClass('turn')
-      socket.emit('update state', {class: 'turn', player: nextTurn})
+      //$('#p' + g.getPlayerIndex(socket.id, players)).removeClass('turn')
+      socket.emit('update state', {turn: 'turn', player: nextTurn})
     })
 
     socket.on('player word', function(word){
@@ -68,20 +73,25 @@ $('document').ready(function() {
     })
 
     socket.on('update game', function(gameState) {
-      g.updateGame(gameState)
+      g.updateGame(gameState, players.length)
       var scores = $('.score').toArray().map(function(e) {
         return e.innerHTML
       })
-      console.log('Im here!!')
+      console.log("Game updated")
       $('#graph').empty()
       d3.makeGraph(scores, users.slice(0, players.length))
     })
 
     socket.on('score', function(score) {
-      score = Math.floor(score)
       var player = g.getPlayerIndex(socket.id, players)
       console.log("PLAYERID: ", player)
       socket.emit('update state', {score: score, player: player})
+    })
+
+    socket.on('player exit', function(array, id) {
+      var player = g.getPlayerIndex(id.slice(2), players)
+      $('#p' + player).remove()
+      players = array
     })
   }
 })

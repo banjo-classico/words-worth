@@ -29,7 +29,6 @@ io.on('connection', function(socket) {
 
   socket.on('player', function(player) {
     players.push(socket.id)
-    var playerNumber = players.length
     console.log(players)
     playername = player
     io.emit('player entry', {name: player, pArray: players})
@@ -50,7 +49,7 @@ io.on('connection', function(socket) {
     socket.broadcast.emit('player word', word)
     retina.compareTerms([{"term": randomWord}, {"term": word}], function(err, resp) {
       console.log(resp.weightedScoring)
-      socket.emit('score', resp.weightedScoring)
+      socket.emit('score', Math.floor(resp.weightedScoring))
     })
   })
 
@@ -60,13 +59,15 @@ io.on('connection', function(socket) {
   })
 
   socket.on('update state', function(data) {
-    g.updateGameState(data, gameState)
+    g.updateGameState(data, gameState, players)
     io.emit('update game', gameState)
     console.log('state updated')
   })
 
   socket.on('disconnect', function() {
-    io.emit('player exit', playername)
+    newplayers = g.removePlayer(socket.id, players)
+    players = newplayers
+    io.emit('player exit', players, socket.id)
     console.log('a user disconnected')
   })
 })
