@@ -59,7 +59,7 @@ io.on('connection', function(socket) {
   })
 
   socket.on('update state', function(data) {
-    g.updateGameState(data, gameState, players)
+    g.updateGameState(data, gameState, players.length)
     io.emit('update game', gameState)
     console.log('state updated')
   })
