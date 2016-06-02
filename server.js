@@ -70,13 +70,11 @@ io.on('connection', function(socket) {
   socket.on('new game', function() {
     newGameState = g.resetGameState(gameState)
     io.emit('update game', newGameState)
-
-    io.emit('update game', gameState)
   })
 
   socket.on('disconnect', function() {
-    //newplayers = g.removePlayer(socket.id, players)
-    //players = newplayers
+    newplayers = g.removePlayer(socket.id, players)
+    players = newplayers
     io.emit('player exit', players, socket.id)
     console.log('a user disconnected')
   })

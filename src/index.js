@@ -101,10 +101,11 @@ $('document').ready(function() {
       socket.emit('new game')
     })
 
-    // socket.on('player exit', function(array, id) {
-    //   var player = g.getPlayerIndex(id.slice(2), players)
-    //   $('#p' + player).remove()
-    //   players = array
-    // })
+    socket.on('player exit', function(array, id) {
+      var player = g.getPlayerIndex(id.slice(2), players)
+      $('#p' + player).remove()
+      $('#' + player).remove()
+      players = array
+    })
   }
 })
