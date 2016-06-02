@@ -33,7 +33,7 @@ io.on('connection', function(socket) {
     io.emit('player entry', {name: player, pArray: players})
   })
 
-  var randomWord = 'penguin'
+  var randomWord = 'politics'
   // socket.on('get random', function() {
   //   randomWord = retina.getRandomWord(function(err, res) {
   //     if (err) console.log(err)

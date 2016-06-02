@@ -19,12 +19,15 @@ $('document').ready(function() {
   $('#enterName').submit(function(e) {
     e.preventDefault()
     if (/[a-z, A-Z, 0-9]/g.test($('#playername').val())) {
-      playGame()
-      d3.makeGraph($('#player-scores').children().text(), ['','','',''])
-      $('.login').hide()
-      $('.title').hide()
-      $('h2').show()
-      $('#game').show()
+      $('#logo').addClass('spin')
+      setTimeout(function() {
+        playGame()
+        d3.makeGraph($('#player-scores').children().text(), ['','','',''])
+        $('.login').hide()
+        $('.title').hide()
+        $('h2').show()
+        $('#game').show()
+      }, 3000)
     }
   })
 
