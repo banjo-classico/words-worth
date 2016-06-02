@@ -8,6 +8,10 @@ body {
   border: 1px solid blue;
 }*/
 
+#wrap {
+  position: relative;
+}
+
 .login {
   margin-top: 150px;
   text-align: center;
@@ -36,12 +40,16 @@ h1 {
   justify-content: space-between;
 }
 
-#title2, #new-game {
+#title2, #new-game, #timer{
   font-family: 'Great Vibes', cursive;
   font-size: 4rem;
   color: #fff;
   margin-top: -100px;
   display: none;
+}
+
+#timer {
+  font-size: 6rem;
 }
 
 #title2 {
@@ -114,6 +122,28 @@ li {
 #player-input {
   text-align: center;
   padding: 10px;
+}
+
+#game-over {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background-color: rgba(60, 60, 60, .9);
+  text-align: center;
+  padding: 10px;
+  border-radius: 50%;
+  display: none;
+}
+
+#winner {
+  color: #fff;
+}
+
+#play-again {
+  background-color: #fff;
+  color: #000;
 }
 
 svg {

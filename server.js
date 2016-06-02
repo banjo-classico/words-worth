@@ -23,7 +23,6 @@ var playername = ''
 var gameState = g.initialiseGameObj()
 
 io.on('connection', function(socket) {
-
   console.log('Player connected')
   socket.emit('initialise game', gameState)
 
@@ -64,9 +63,20 @@ io.on('connection', function(socket) {
     console.log('state updated')
   })
 
+  socket.on('winner', function(playerPosition) {
+    io.emit('game over', playerPosition)
+  })
+
+  socket.on('new game', function() {
+    newGameState = g.resetGameState(gameState)
+    io.emit('update game', newGameState)
+
+    io.emit('update game', gameState)
+  })
+
   socket.on('disconnect', function() {
-    newplayers = g.removePlayer(socket.id, players)
-    players = newplayers
+    //newplayers = g.removePlayer(socket.id, players)
+    //players = newplayers
     io.emit('player exit', players, socket.id)
     console.log('a user disconnected')
   })

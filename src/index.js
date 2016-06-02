@@ -47,10 +47,6 @@ $('document').ready(function() {
       socket.emit('update state', {player: players.length, text: text})
     })
 
-    socket.on('update board', function(board) {
-      $('#board').append(board)
-    })
-
     $('#attempt').submit(function(e) {
       e.preventDefault()
       var playerWord = $('#player-word').val()
@@ -64,8 +60,8 @@ $('document').ready(function() {
       $('#player-word').val('')
       //toggle turn highlighter
       var nextTurn = g.changeTurn($('.turn').attr('id').slice(1), players.length)
-      //$('#p' + g.getPlayerIndex(socket.id, players)).removeClass('turn')
       socket.emit('update state', {turn: 'turn', player: nextTurn})
+      //g.startTimer(10, $('#timer'))
     })
 
     socket.on('player word', function(word){
@@ -75,11 +71,16 @@ $('document').ready(function() {
     socket.on('update game', function(gameState) {
       g.updateGame(gameState, players.length)
       var scores = $('.score').toArray().map(function(e) {
-        return e.innerHTML
+        return e.innerHTML.slice(-2)
       })
       console.log("Game updated")
       $('#graph').empty()
       d3.makeGraph(scores, users.slice(0, players.length))
+      var winningPlayerPosition = g.checkForWin(scores)
+      console.log("WIN: ", winningPlayerPosition)
+      if(winningPlayerPosition) {
+        socket.emit('winner', winningPlayerPosition)
+      } 
     })
 
     socket.on('score', function(score) {
@@ -88,10 +89,22 @@ $('document').ready(function() {
       socket.emit('update state', {score: score, player: player})
     })
 
-    socket.on('player exit', function(array, id) {
-      var player = g.getPlayerIndex(id.slice(2), players)
-      $('#p' + player).remove()
-      players = array
+    socket.on('game over', function(playerPosition) {
+      var winner = $('#p' + playerPosition).text().slice(10)
+      $('#winner').text(winner + ' wins!!')
+      $('#game-over').show()
     })
+
+    $('#play-again').click(function() {
+      $('#used-words').empty('li')
+      $('#game-over').hide()
+      socket.emit('new game')
+    })
+
+    // socket.on('player exit', function(array, id) {
+    //   var player = g.getPlayerIndex(id.slice(2), players)
+    //   $('#p' + player).remove()
+    //   players = array
+    // })
   }
 })

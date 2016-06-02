@@ -1,3 +1,18 @@
+function startTimer(duration, display) {
+    var timer = duration
+    var countdown = setInterval(function () {
+        seconds = parseInt(timer % 60, 10)
+
+
+        if(seconds % 2 === 0) {
+          display.text(seconds)
+        }
+        if (--timer < 0) {
+            clearInterval(countdown)
+        }
+    }, 500)
+}
+
 function checkWord(word, usedWords) {
   if (usedWords.length === 0) {
     return true
@@ -8,17 +23,6 @@ function checkWord(word, usedWords) {
     return false
   }
 }
-
-// function updateScore(score, playerId, array) {
-//   score = Math.floor(score)
-//   var id = getPlayerIndex(playerId, array)
-//   scoreDiv = $('#' + id)
-//   var playerScore = parseInt(scoreDiv.text(), 10)
-//   playerScore += score
-//   scoreDiv.empty()
-//   scoreDiv.text(playerScore)
-
-// }
 
 function getPlayerIndex(id, array) {
   id = "/#" + id
@@ -44,17 +48,14 @@ function initialiseGameObj() {
     scores: {
       1: 0, 2: 0, 3: 0, 4: 0
     },
-    turn: {1: 'turn', 2: '', 3: '', 4: ''},
-    hide: {1: 'hide', 2: 'hide', 3: 'hide', 4: 'hide'} 
+    turn: {1: 'turn', 2: '', 3: '', 4: ''} 
   }
 }
-
-
 
 function updateGame(gameState, num) {
   for (var i = 1; i <= num ; i++) {
     $('#p' + i).text(gameState.players[i])
-    $('#' + i).text(gameState.scores[i])
+    $('#' + i).text(gameState.players[i].slice(10) + ': ' + gameState.scores[i])
     if ($('#p' + i).hasClass('turn')) {
       $('#p' + i).removeClass('turn')
     }
@@ -63,7 +64,6 @@ function updateGame(gameState, num) {
 }
 
 function updateGameState(data, gameState, num){
-  console.log("PLAYERS: ", num)
   switch (Object.keys(data)[0]) {
     case 'player': 
       gameState.players[data.player] = data.text
@@ -82,6 +82,20 @@ function updateGameState(data, gameState, num){
   }
 }
 
+function checkForWin(scores) {
+  winningScore = scores.filter(function (score) {
+            return score > 79
+            })
+
+  if (winningScore.length === 1) {
+    console.log("SCORES: ", scores)
+    console.log('winning score: ', winningScore)
+    return scores.indexOf(winningScore[0]) + 1
+  } else {
+    return null
+  }
+}
+
 function removePlayer(id, array) {
   var index = array.indexOf(id)
   if (index > -1) {
@@ -90,14 +104,27 @@ function removePlayer(id, array) {
   }
 }
 
+function resetGameState(gameState) {
+  for (var i = 1; i < 5; i++) {
+    gameState.scores[i] = 0
+    if (i === 1) {
+      gameState.turn[i] = 'turn'
+    } else {
+      gameState.turn[i] = ''
+    }
+  }
+  return gameState
+}
+
 module.exports = {
+  startTimer: startTimer,
   checkWord: checkWord,
-  //updateScore: updateScore,
   getPlayerIndex: getPlayerIndex,
   initialiseGameObj: initialiseGameObj,
   updateGame: updateGame,
   updateGameState: updateGameState,
   changeTurn: changeTurn, 
-  removePlayer: removePlayer
-  // makeUpdateObject: makeUpdateObject
+  checkForWin: checkForWin,
+  removePlayer: removePlayer,
+  resetGameState: resetGameState
 }
