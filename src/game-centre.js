@@ -1,16 +1,14 @@
 function startTimer(duration, display) {
-    var timer = duration
-    var countdown = setInterval(function () {
-        seconds = parseInt(timer % 60, 10)
-
-
-        if(seconds % 2 === 0) {
-          display.text(seconds)
-        }
-        if (--timer < 0) {
-            clearInterval(countdown)
-        }
-    }, 500)
+  var timer = duration
+  var countdown = setInterval(function () {
+    seconds = parseInt(timer % 60, 10)
+    if(seconds % 2 === 0) {
+      display.text(seconds)
+    } // separate function
+    if (--timer < 0) {
+      clearInterval(countdown)
+    } // separate function
+  }, 500)
 }
 
 function checkWord(word, usedWords) {
@@ -48,7 +46,7 @@ function initialiseGameObj() {
     scores: {
       1: 0, 2: 0, 3: 0, 4: 0
     },
-    turn: {1: 'turn', 2: '', 3: '', 4: ''} 
+    turn: {1: 'turn', 2: '', 3: '', 4: ''}
   }
 }
 
@@ -65,7 +63,7 @@ function updateGame(gameState, num) {
 
 function updateGameState(data, gameState, num){
   switch (Object.keys(data)[0]) {
-    case 'player': 
+    case 'player':
       gameState.players[data.player] = data.text
       break
     case 'score':
@@ -123,7 +121,7 @@ module.exports = {
   initialiseGameObj: initialiseGameObj,
   updateGame: updateGame,
   updateGameState: updateGameState,
-  changeTurn: changeTurn, 
+  changeTurn: changeTurn,
   checkForWin: checkForWin,
   removePlayer: removePlayer,
   resetGameState: resetGameState
