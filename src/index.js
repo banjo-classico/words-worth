@@ -11,13 +11,16 @@ $('document').ready(function() {
 
   socket.on('initialise game', function(gameState) {
     $('.login').show()
-      $('.title').show()
-      $('h2').hide()
-      $('#game').hide()
+    $('.title').show()
+    $('h2').hide()
+    $('#game').hide()
   })
 
   $('#enterName').submit(function(e) {
     e.preventDefault()
+    // is there a reason for this regex if statement?
+    // and if so, it would be a good idea to provide an 'else' clause
+    // for when a user only uses ':)' as their username
     if (/[a-z, A-Z, 0-9]/g.test($('#playername').val())) {
       $('#logo').addClass('spin')
       setTimeout(function() {
@@ -27,11 +30,16 @@ $('document').ready(function() {
         $('.title').hide()
         $('h2').show()
         $('#game').show()
+
+        // this statement has slightly too much logic in it,
+        // pull out the page setup into it's own function
       }, 3000)
     }
   })
 
   function playGame() {
+    // this should be split up into different functions and extracted out into
+    // its own file!
     console.log("Game is initiated")
     socket.emit('get random')
     var player = $('#playername').val()
@@ -53,18 +61,17 @@ $('document').ready(function() {
     $('#attempt').submit(function(e) {
       e.preventDefault()
       var playerWord = $('#player-word').val()
-      var usedWords = $('#used-words').children().text()  
+      var usedWords = $('#used-words').children().text()
       if (g.checkWord(playerWord, usedWords)) {
         $('#used-words').append($('<li>').text(playerWord))
         socket.emit('player word', playerWord)
       } else {
         socket.emit('non-word', 0)
       }
-      $('#player-word').val('')
-      //toggle turn highlighter
-      var nextTurn = g.changeTurn($('.turn').attr('id').slice(1), players.length)
-      socket.emit('update state', {turn: 'turn', player: nextTurn})
-      //g.startTimer(10, $('#timer'))
+        $('#player-word').val('')
+        //toggle turn highlighter
+        var nextTurn = g.changeTurn($('.turn').attr('id').slice(1), players.length)
+        socket.emit('update state', {turn: 'turn', player: nextTurn})
     })
 
     socket.on('player word', function(word){
@@ -83,7 +90,7 @@ $('document').ready(function() {
       console.log("WIN: ", winningPlayerPosition)
       if(winningPlayerPosition) {
         socket.emit('winner', winningPlayerPosition)
-      } 
+      }
     })
 
     socket.on('score', function(score) {
